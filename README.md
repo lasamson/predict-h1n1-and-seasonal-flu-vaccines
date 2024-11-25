@@ -65,3 +65,66 @@ The final model achieved a mean AUC of `0.85` on the held-out test set. Below ar
 ![h1n1-roc](img/roc_curve_final_h1n1_cls.png)
 
 ![seasonal-roc](img/roc_curve_final_seasonal_flu_cls.png)
+
+### Installing Dependencies
+
+The dependencies for this project can be installed using `pipenv`. First, install `pipenv` using `pip`:
+
+```
+pip install pipenv
+```
+
+Then, the dependencies can be installed by first changing directory into the root folder of this project, and then running the following:
+
+```
+pipenv install
+```
+
+Note that this will create a virtual environment for this project. The virtual environment can be activated by running:
+
+```
+pipenv shell
+```
+
+### Running the Training Script
+
+The necessary files for generating predictions are packaged as a binary file and is available at `bin/final_model.bin`. The contents (`DictVectorizer` objects and classification models for the h1n1 and seasonal flu prediction tasks, respectively) can be unpacked using `pickle.load`.
+
+However, if one wants to re-train the models and generate the binary file, they can simply run the `train.py` script, as follows:
+
+```
+python src/train.py
+```
+Note that this command must be run from the project's root folder.
+
+### Running the Flask Service and Making Predictions
+
+There is a provided Flask web service that exposes an endpoint (`/predict`), where requests containing the relevant features of a respondent (as a JSON object) can be sent in order to generate corresponding vaccine predictions.
+
+This service can be run with the following command:
+```
+gunicorn --bind=0.0.0.0:9696 src.predict:app
+```
+Note that this command must be run from the project's root folder.
+
+Then, requests can be made to the model endpoint. The file `src/predict-test.py` provides an example of how such a request can be made. Simply run the following from the project's root folder:
+
+```
+python src/predict-test.py
+```
+
+### Building the Docker Image and Running the Docker Container
+
+There is also a provided Dockerfile. Building the Docker image and running it as a container will run the prediction service within the container, and the service will be listening at port 9696.
+
+Build the Docker image as follows:
+```
+docker build -t vaccine-prediction .
+```
+Then, run the image as a Docker container as follows:
+```
+docker run -it --rm -p 9696:9696 vaccine-prediction
+```
+The `-p 9696:9696` part of the command will forward the host's port 9696 to the container's port 9696, which is exposed in the Dockerfile.
+
+Note that the above commands must be run from the project's root folder.
