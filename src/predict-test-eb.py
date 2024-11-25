@@ -1,6 +1,7 @@
 import requests
 
-url = "http://localhost:9696/predict"
+host = 'vaccine-serving-env.eba-zmeypmkd.us-east-1.elasticbeanstalk.com'
+url = f"http://{host}/predict"
 
 respondent_id = "abc-123"
 respondent = {
