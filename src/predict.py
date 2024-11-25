@@ -5,7 +5,7 @@ from flask import request
 from flask import jsonify
 
 # Saved model file
-model_file = 'bin/final_model.bin'
+model_file = '../bin/final_model.bin'
 
 # Load trained DictVectorizers and XGBoost classifier models for h1n1 and seasonal
 # flu prediction tasks

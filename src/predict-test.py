@@ -49,7 +49,7 @@ print(response)
 if response["h1n1"] == True:
     print(f"Incorrect. {respondent_id} did not get h1n1 vaccine.")
 else:
-    print(f"Correct. {respondent_id} did get h1n1 vaccine.")
+    print(f"Correct. {respondent_id} did not get h1n1 vaccine.")
 
 if response["seasonal"] == True:
     print(f"Correct. {respondent_id} did get seasonal flu vaccine.")
