@@ -128,3 +128,23 @@ docker run -it --rm -p 9696:9696 vaccine-prediction
 The `-p 9696:9696` part of the command will forward the host's port 9696 to the container's port 9696, which is exposed in the Dockerfile.
 
 Note that the above commands must be run from the project's root folder.
+
+### Deploy to Cloud (AWS Elastic Beanstalk)
+
+This application can be deployed to AWS Elastic Beanstalk with the `awsebcli` CLI tool by running the following commands:
+```
+eb init -p <message> -r <region> <appname>
+eb create <envname>
+```
+The first command initializes a new Elastic Beanstalk application within the current project directory (i.e. setting up the necessary config files and prompting us to define default settings for deploying the application to EB). The second command initiates the process of creating a new deployment environment on AWS for the application by setting up the necessary infrastructure on AWS (i.e. provisioning servers, load balancing, automating scaling, etc. based on the specified configuration).
+
+The following is an example of how one may run these commands. 
+```
+eb init -p "Docker running on 64bit Amazon Linux 2" -r us-east-1 vaccine-serving
+eb create vaccine-serving-env --enable-spot
+```
+After running the above commands, and after AWS has finished setting up the environment, the CLI should output something like the following:
+```
+INFO    Application available at <url>
+```
+Then, we can simply make requests to the `/predict` endpoint at this url. The script `src/predict-test-eb.py` provides an example of how this can be done.
